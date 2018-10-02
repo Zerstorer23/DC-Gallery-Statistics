@@ -1,0 +1,5 @@
+dum,my,This is a blank line
+gallID,haruhiism,//Gallery ID of the DC gallery you want to parse
+major,true,//Is this a major? or minor
+MAXPAGE,10,//Maximum pages to parse
+cores,3,//Number of threads to load websites
