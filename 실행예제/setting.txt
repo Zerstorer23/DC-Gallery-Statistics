@@ -1,0 +1,11 @@
+##설정파일입니다.
+gallID,haruhiism,갤러리 고유 ID
+major,false,메이져갤 =true / 마이너갤 = false
+maxPage,152,긁어낼 최대 페이지
+GalleryYear,2016,갤러리 생성년도
+CurrentYear,2019,현재 년도
+minimumActiveDays,0,유저 필터링 기준 최소 활동기간
+minimumFrequency,0,유저 필터링 기준 최소 글 작성수
+kToken,3,키워드 긁어내는 글자수 (예: 3으로 설정 [스즈미]야하루히 = [스즈미]야 호루히)
+crawlKeywords,true,키워드 분석도 한다 =true
+collectOnlyAfterThisPage,-1
