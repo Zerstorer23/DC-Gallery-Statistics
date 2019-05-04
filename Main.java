@@ -2,6 +2,7 @@ package gallery;
 
 import gallery.Crawler.Crawler;
 import gallery.Crawler.Crawler_DC_mx_title;
+import gallery.Crawler.Crawler_DC_mx_title_group;
 import gallery.Objects.Month;
 import gallery.Objects.User;
 
@@ -20,16 +21,18 @@ public class Main {
     public static String gallID = "haruhiism";
     public static int MAXPAGE = 700; // 71
     public static int increment = 1;
+    public static boolean mergeGonick = true;
 
     private static boolean verbose = false;//디버그용.true로 하면 더 많은 정보가 나온다/
     static int kToken = 3;//키워드 찾기 그룹변수. 3으로 설정한다.
     static int minimumActiveDays = 7; //유저가 너무 많을때 활동일 n일 이상만 출력한다 (그 이하 유저도 정보는 저장된다.)
     public static int minimumFrequency = 20; //유저가 너무 많을때 작성수 n 이상만 출력한다 (그 이하 유저도 정보는 저장된다.)
     static boolean crawlKeywords = true; //true 설정시 키워드 분석도 돌아간다.
-    private static Crawler crawler = new Crawler_DC_mx_title();
+    private static Crawler crawler = new Crawler_DC_mx_title_group();
 
     public static void main(String[] args) {
         read("setting.txt"); //설정 읽어들이고 날짜 오브젝트 생성
+        if(!mergeGonick) crawler = new Crawler_DC_mx_title();
         crawler.scrollRaw(); //갤러리 스크롤
         lock(5); // 5초마다 스크롤이 완료되었는지 확인
         crawler.polishUp(); // 완료 확인시 마무리작업
@@ -38,8 +41,6 @@ public class Main {
             grandKeyFrequency(50); //갤러리 전체 키워드 계산 (필수)
             printTopFrequency(100); //가장 높은 n개 키워드 출력
         }
-
-        setUserNames();//유저이름 설정
         monthlyAnalysis();
         crawler.writeCSV();
         System.out.println(minimumActiveDays);
@@ -47,13 +48,7 @@ public class Main {
         // write your code here
     }
 
-    private static void setUserNames() {
-        //닉변한 고닉들은 가장 자주 쓴 닉으로 대표닉 설정
-        //유동은 이름 그대로 사용. ㅇㅇ들만 ip별로 구분
-        for(User user : Userlist){
-            user.setName();
-        }
-    }
+
 
     //키워드 클러스터링 알고리즘. 나도 설명못함
     public static HashMap extractKeywords_fast(HashMap<String, Integer> passedMap) {

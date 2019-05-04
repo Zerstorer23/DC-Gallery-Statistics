@@ -20,16 +20,16 @@ public class User {
     public int totalWrite;
     //  ArrayList<String> sentences = new ArrayList<>();
     public HashMap<String, Integer> vocab_freq = new HashMap<>();
-    private HashMap<String, Integer> name_freq = new HashMap<>();
+
+    public User(String nick) {
+        this.name = nick;
+        this.totalWrite = 1;
+    }
 
     public User(String nick, String UID) {
-        if (UID == null) {
-            this.name = nick;
-        } else {
-            this.UID = UID;
-        }
+        this.name = nick;
+        this.UID = UID;
         this.totalWrite = 1;
-        name_freq.put(nick, 1);
     }
 
     public void addSentence(String content) {
@@ -78,18 +78,6 @@ public class User {
         this.vocab_freq = sortHashMapByValues(this.vocab_freq);
     }
 
-    public void setName() {
-        if (name !=null) return;
-        Map.Entry<String, Integer> maxEntry = null;
-        for (Map.Entry<String, Integer> entry : name_freq.entrySet()) {
-            if (maxEntry == null || entry.getValue().compareTo(maxEntry.getValue()) > 0) {
-                maxEntry = entry;
-            }
-        }
-        if (maxEntry != null) {
-            this.name = maxEntry.getKey();
-        }
-    }
 
     public void getInterestKeyword(int max) {
         sortMap();
@@ -113,7 +101,7 @@ public class User {
         if (activeDays > 0) {
             period = activeDays / totalWrite;
         }
-        System.out.println(this.name + " " + this.UID);
+        System.out.println(this.name);
         System.out.println("├━━활동기간: " + this.activeMonths.readableString());
         System.out.println("├━━글 작성:" + this.totalWrite);
         if (period > 0) {
@@ -121,17 +109,10 @@ public class User {
         } else {
             System.out.println("└━━ 매일");
         }
-
-
         System.out.println(" ");
     }
 
     public void updateName(String writer) {
-        if (name_freq.containsKey(writer)) {
-            int freq = name_freq.get(writer) + 1;
-            name_freq.replace(writer, freq);
-        } else {
-            name_freq.put(writer, 1);
-        }
+        this.name = writer;
     }
 }

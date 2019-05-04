@@ -19,12 +19,13 @@ import static gallery.readSetting.currentYear;
 import static gallery.readSetting.galleryYear;
 
 
-public class Crawler_DC_mx_title extends Crawler {
+public class Crawler_DC_mx_title_group extends Crawler {
 
 
     /**
      * 갤러리의 모든 글 제목을 긁어내는 코드입니다.
      * 유지보수 쟁점
+     * 고닉의 data-uid-nick를 체크해 같은 계정은 묶고 닉변한 계정은 가장 최근의 닉을 보여준다.
      */
     public void scrollRaw() {
         if (major) {
@@ -47,6 +48,7 @@ public class Crawler_DC_mx_title extends Crawler {
                             String type = post.select("td[class=gall_num]").first().text();
                             if (!isValidIndex(type)) continue;
                             String writer = post.select("td[class=gall_writer ub-writer]").attr("data-nick");
+                            String writerUID = post.select("td[class=gall_writer ub-writer]").attr("data-uid-nick");
                             writer = cleanseNick(writer);
                             String ip = post.select("span[class=ip]").text();
                             String view = post.select("td[class=gall_count]").text();
@@ -84,25 +86,33 @@ public class Crawler_DC_mx_title extends Crawler {
                             months[year][month - 1].appendReply(Integer.parseInt(replies));
                             months[year][month - 1].appendView(Integer.parseInt(view));
                             String UID;
-                            if(writer.equals("ㅇㅇ")){
+                            if (ip == null) {
+                                //고닉들. 고유 갤로그 id로 정리한다.
+                                UID = writerUID;
+                            } else if(writer.equals("ㅇㅇ")){
                                 //ㅇㅇ 유동들. ip로 정리한다
-                                writer =writer+" "+ip;
+                                writer = writer+ip;
+                                UID = writer;
+                            } else{
+                                //유동인데 ㅇㅇ이 아닌녀석들. 닉으로 정리한다
+                                //null로 보내면 오브젝트 생성단계에서 자동 이름 설정
+                                UID = writer;
                             }
                             //User
-                            if (!UserHash.containsKey(writer)) {
-                                User user = new User(writer);
+                            if (!UserHash.containsKey(UID)) {
+                                User user = new User(writer,UID);
                                 user.addSentence(title);
                                 user.updateDate(time);
-                                UserHash.put(user.name, Userlist.size());
+                                UserHash.put(user.UID, Userlist.size());
                                 Userlist.add(user);
                             } else {
-                                int index = UserHash.get(writer);
+                                int index = UserHash.get(UID);
                                 Userlist.get(index).addSentence(title);
                                 Userlist.get(index).updateDate(time);
                                 Userlist.get(index).updateName(writer);
                                 Userlist.get(index).totalWrite++;
                             }
-                            months[year][month - 1].appendUser(writer);
+                            months[year][month - 1].appendUser(UID);
                             months[year][month - 1].addSentence(title);
                         }
                     } catch (HttpStatusException e) {
@@ -127,7 +137,6 @@ public class Crawler_DC_mx_title extends Crawler {
             month = aUserlist.firstWrite.month - 1;
             months[year][month].newUserIDs.add(aUserlist.name);
         }
-
     }
 
     @Override
@@ -138,7 +147,7 @@ public class Crawler_DC_mx_title extends Crawler {
         PrintWriter mpw = getPrinter(mFilename);
         //Write Months
         mpw.write("Date,totalPost,totalReply,totalView,newUser,avgStay\n");
-        for (int y = 0; y < months.length; y++) {
+        for (int y = 0; y < 3; y++) {
             for (int m = 0; m < 12; m++) {
                 Month haruhi = months[y][m];
                 if (haruhi != null) {

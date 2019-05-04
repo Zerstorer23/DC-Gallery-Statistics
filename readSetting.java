@@ -14,6 +14,7 @@ public class readSetting {
     private static int collectOnlyAfterThisPage = Integer.MAX_VALUE;
     public static int currentYear = 2019;
     public static int galleryYear = 2016;
+
     static void read(String fileName) {
         // Name + UserInfo + CVList+
         try {
@@ -22,7 +23,7 @@ public class readSetting {
             String temp;
             sc.readLine();
             while ((temp = sc.readLine()) != null) {
-                if(temp.charAt(0)=='#')continue;
+                if (temp.charAt(0) == '#') continue;
                 String[] entry = temp.split(",");
                 String head = entry[0];
                 String data = entry[1];
@@ -51,6 +52,9 @@ public class readSetting {
                     case "crawlKeywords":
                         crawlKeywords = Boolean.parseBoolean(data);
                         break;
+                    case "mergeGonick":
+                        mergeGonick = Boolean.parseBoolean(data);
+                        break;
                     case "galleryYear":
                         galleryYear = Integer.parseInt(data);
                         break;
@@ -66,9 +70,9 @@ public class readSetting {
             }
             sc.close();
 
-            galleryYear-=2000;
-            currentYear-=2000;
-            months = new Month[currentYear - galleryYear+1][12];
+            galleryYear -= 2000;
+            currentYear -= 2000;
+            months = new Month[currentYear - galleryYear + 1][12];
         } catch (IOException e) {
             e.printStackTrace();
         }
