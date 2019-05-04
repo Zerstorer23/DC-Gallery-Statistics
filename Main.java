@@ -42,6 +42,7 @@ public class Main {
         }
         monthlyAnalysis();
         crawler.writeCSV();
+        crawler.flushConsole();
         System.out.println(minimumActiveDays);
         System.out.println(minimumFrequency);
         // write your code here
@@ -156,8 +157,10 @@ public class Main {
      * */
     private static void printTopFrequency(int max) {
         int c = 0;
+        console("갤러리 키워드");
         for (Map.Entry<String, Integer> entry : vocabHash.entrySet()) {
-            System.out.println((c + 1) + ". " + entry.getKey() + "  [" + entry.getValue() + "]회");
+            String out = (c + 1) + ". " + entry.getKey() + "  [" + entry.getValue() + "]회";
+            console(out);
             c++;
             if (c >= max) break;
         }
@@ -169,8 +172,10 @@ public class Main {
             for (int m = 0; m < 12; m++) {
                 Month haruhi = months[y][m];
                 if (haruhi != null) {
-                    System.out.println("━━━━━━━" + (galleryYear + y) + "년 " + (m + 1) + "월 통계");
-                    System.out.println("━━━ 신규 유입 유저: " + haruhi.newUserIDs.size() + " 명");
+                    String t1 = "━━━━━━━" + (galleryYear + y) + "년 " + (m + 1) + "월 통계";
+                    console(t1);
+                    String t2 = "━━━ 신규 유입 유저: " + haruhi.newUserIDs.size() + " 명";
+                    console(t2);
                     if (haruhi.vocab_freq.size() > 0) {
                         haruhi.getInterestKeyword(5);
                         for (int i = 0; i < haruhi.newUserIDs.size(); i++) {
@@ -179,7 +184,7 @@ public class Main {
                         }
                     }
                 } else {
-                    System.out.println("━━━━━━━" + (galleryYear + y) + "년 " + (m + 1) + "월 자료없음");
+                    console("━━━━━━━" + (galleryYear + y) + "년 " + (m + 1) + "월 자료없음");
                 }
             }
         }

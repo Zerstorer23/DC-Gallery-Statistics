@@ -1,10 +1,17 @@
 package gallery.Crawler;
 
+import gallery.Objects.Month;
+import gallery.Objects.User;
+
+import java.io.PrintWriter;
 import java.util.*;
 
-import static gallery.Main.MAXPAGE;
-import static gallery.Main.increment;
-import static gallery.Main.mainPage;
+import static gallery.Main.*;
+import static gallery.Main.gallID;
+import static gallery.Main.minimumFrequency;
+import static gallery.Objects.Hash_storage.*;
+import static gallery.Preprocessor.getPrinter;
+import static gallery.readSetting.galleryYear;
 
 /**
  * 갤러리 정보 긁는 크롤러
@@ -122,5 +129,15 @@ public abstract class Crawler {
         return ready;
     }
 
+
+    public void flushConsole() {
+        String mFilename = "console_" + gallID + "_output.txt";
+        PrintWriter mpw = getPrinter(mFilename);
+        //Write Months
+       for(String s : outTextBox){
+           mpw.write(s+"\n");
+       }
+        mpw.close();
+    }
 
 }

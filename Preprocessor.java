@@ -10,6 +10,7 @@ import static gallery.Crawler.Crawler.isReadyToBuild;
 
 public class Preprocessor {
 
+
     static void lock(int seconds) {
         try {
             Thread.sleep(seconds * 1000);

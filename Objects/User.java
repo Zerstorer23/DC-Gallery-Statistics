@@ -5,9 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import static gallery.Objects.Hash_storage.Userlist;
-import static gallery.Objects.Hash_storage.topKeywords;
-import static gallery.Objects.Hash_storage.vocabHash;
+import static gallery.Objects.Hash_storage.*;
 import static gallery.Preprocessor.sortHashMapByValues;
 
 public class User {
@@ -101,15 +99,16 @@ public class User {
         if (activeDays > 0) {
             period = activeDays / totalWrite;
         }
-        System.out.println(this.name);
-        System.out.println("├━━활동기간: " + this.activeMonths.readableString());
-        System.out.println("├━━글 작성:" + this.totalWrite);
+        console(this.name);
+
+        console("├━━활동기간: " + this.activeMonths.readableString());
+        console("├━━글 작성:" + this.totalWrite);
         if (period > 0) {
-            System.out.println("└━━" + period + "일에 글 하나");
+            console("└━━" + period + "일에 글 하나");
         } else {
-            System.out.println("└━━ 매일");
+            console("└━━ 매일");
         }
-        System.out.println(" ");
+        console(" ");
     }
 
     public void updateName(String writer) {

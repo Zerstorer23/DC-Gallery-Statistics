@@ -13,5 +13,10 @@ public class Hash_storage {
     public static HashMap<String,Integer> vocabHash = new HashMap<>();
     public static ArrayList<String> topKeywords = new ArrayList<>();
 
+    public static ArrayList<String> outTextBox = new ArrayList<>();
+    public static void console(String  a){
+        outTextBox.add(a);
+        System.out.println(a);
+    }
 
 }
