@@ -6,14 +6,13 @@ import gallery.Crawler.Crawler_DC_mx_title_group;
 import gallery.Objects.Month;
 import gallery.Objects.User;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static gallery.Objects.Hash_storage.*;
 import static gallery.Preprocessor.*;
 import static gallery.readSetting.galleryYear;
 import static gallery.readSetting.read;
+import static java.util.stream.Collectors.toMap;
 
 public class Main {
     public static boolean major = false;
@@ -32,7 +31,7 @@ public class Main {
 
     public static void main(String[] args) {
         read("setting.txt"); //설정 읽어들이고 날짜 오브젝트 생성
-        if(!mergeGonick) crawler = new Crawler_DC_mx_title();
+        if (!mergeGonick) crawler = new Crawler_DC_mx_title();
         crawler.scrollRaw(); //갤러리 스크롤
         lock(5); // 5초마다 스크롤이 완료되었는지 확인
         crawler.polishUp(); // 완료 확인시 마무리작업
@@ -49,9 +48,9 @@ public class Main {
     }
 
 
-
     //키워드 클러스터링 알고리즘. 나도 설명못함
     public static HashMap extractKeywords_fast(HashMap<String, Integer> passedMap) {
+        System.out.println("클러스터링 시작");
         Map<String, Integer> hash = sortHashMapByKeys(passedMap);
         ArrayList<String> word = new ArrayList<>();
         ArrayList<Integer> freq = new ArrayList<>();
@@ -62,22 +61,25 @@ public class Main {
             //  System.out.println(entry.getKey()+","+entry.getValue());
         }
         int curr = 0;
+        System.out.println("1 순환 완료");
 
         //2 Pass
         while (curr < word.size()) {
+            System.out.println(curr + " / " + word.size());
             String parent = word.get(curr);
             if (parent.length() < kToken) {
                 curr++;
                 continue;
             }
             int childIndex = curr + 1;
-            boolean abort = false;
 
-            while (childIndex < word.size() && !abort) {
+            while (childIndex < word.size() ) {
                 String child = word.get(childIndex);
-                if (parent.length() == 0) abort = true;
+                if (parent.length() == 0) break;
                 if (child.length() > 0) {
-                    if (child.charAt(0) != parent.charAt(0)) abort = true;
+                    if (child.charAt(0) != parent.charAt(0)) {
+                        break;
+                    }
                 }
 
                 int lendiff = Math.abs(parent.length() - child.length());
@@ -94,19 +96,21 @@ public class Main {
                         freq.remove(childIndex);
                         word.remove(childIndex);
                     } else {
-                        abort = true;
+                        break;
                     }
                 }
                 childIndex++;
             }
             curr++;
         }
+        System.out.println("2 순환 완료");
 
         //3 pass
         HashMap<String, Integer> keyHash = new HashMap<>();
         for (int i = 0; i < word.size(); i++) {
             keyHash.put(word.get(i), freq.get(i));
         }
+        System.out.println("3 순환 완료");
         return keyHash;
     }
 
@@ -126,7 +130,17 @@ public class Main {
         }
 
         vocabHash = extractKeywords_fast(vocabHash);
-        vocabHash = sortHashMapByValues(vocabHash);
+        System.out.println("정렬중 ... ");
+        vocabHash = vocabHash
+                .entrySet()
+                .stream()
+                .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+                .collect(
+                        toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2,
+                                LinkedHashMap::new));
+        //
+        //vocabHash = sortHashMapByValues(vocabHash);
+        System.out.println("정렬 완료");
         verbose = false;
         int c = 0;
         for (Map.Entry<String, Integer> entry : vocabHash.entrySet()) {
