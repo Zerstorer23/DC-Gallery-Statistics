@@ -8,4 +8,5 @@ minimumActiveDays,0,유저 필터링 기준 최소 활동기간
 minimumFrequency,0,유저 필터링 기준 최소 글 작성수
 kToken,3,키워드 긁어내는 글자수 (예: 3으로 설정 [스즈미]야하루히 = [스즈미]야 호루히)
 crawlKeywords,true,키워드 분석도 한다 =true
+mergeGonick,true,닉변한 고닉은 묶어서
 collectOnlyAfterThisPage,-1
