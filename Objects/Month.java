@@ -1,13 +1,12 @@
 package gallery.Objects;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import static gallery.Main.extractKeywords_fast;
 import static gallery.Objects.Hash_storage.*;
 import static gallery.Preprocessor.sortHashMapByValues;
+import static java.util.stream.Collectors.toMap;
 
 public class Month {
     private Date date;
@@ -80,8 +79,14 @@ public class Month {
 
     public void getInterestKeyword(int max) {
         //  vocab_freq = sortHashMapByValues(vocab_freq);
-        vocab_freq = extractKeywords_fast(vocab_freq);
-        vocab_freq = sortHashMapByValues(vocab_freq);
+        vocab_freq = extractKeywords_fast(vocab_freq,false);
+        vocab_freq = vocab_freq
+                .entrySet()
+                .stream()
+                .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+                .collect(
+                        toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2,
+                                LinkedHashMap::new));
         int c = 0;
         for (Map.Entry<String, Integer> entry : vocab_freq.entrySet()) {
             if (entry.getKey().length() > 2) {

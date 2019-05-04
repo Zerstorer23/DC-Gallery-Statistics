@@ -49,8 +49,8 @@ public class Main {
 
 
     //키워드 클러스터링 알고리즘. 나도 설명못함
-    public static HashMap extractKeywords_fast(HashMap<String, Integer> passedMap) {
-        System.out.println("클러스터링 시작");
+    public static HashMap extractKeywords_fast(HashMap<String, Integer> passedMap, boolean verbose) {
+        if (verbose) System.out.println("클러스터링 시작");
         Map<String, Integer> hash = sortHashMapByKeys(passedMap);
         ArrayList<String> word = new ArrayList<>();
         ArrayList<Integer> freq = new ArrayList<>();
@@ -61,11 +61,11 @@ public class Main {
             //  System.out.println(entry.getKey()+","+entry.getValue());
         }
         int curr = 0;
-        System.out.println("1 순환 완료");
+        if (verbose) System.out.println("1 순환 완료");
 
         //2 Pass
         while (curr < word.size()) {
-            System.out.println(curr + " / " + word.size());
+            if (verbose) System.out.println(curr + " / " + word.size());
             String parent = word.get(curr);
             if (parent.length() < kToken) {
                 curr++;
@@ -73,7 +73,7 @@ public class Main {
             }
             int childIndex = curr + 1;
 
-            while (childIndex < word.size() ) {
+            while (childIndex < word.size()) {
                 String child = word.get(childIndex);
                 if (parent.length() == 0) break;
                 if (child.length() > 0) {
@@ -103,14 +103,14 @@ public class Main {
             }
             curr++;
         }
-        System.out.println("2 순환 완료");
+        if (verbose) System.out.println("2 순환 완료");
 
         //3 pass
         HashMap<String, Integer> keyHash = new HashMap<>();
         for (int i = 0; i < word.size(); i++) {
             keyHash.put(word.get(i), freq.get(i));
         }
-        System.out.println("3 순환 완료");
+        if (verbose) System.out.println("3 순환 완료");
         return keyHash;
     }
 
@@ -129,7 +129,7 @@ public class Main {
             }
         }
 
-        vocabHash = extractKeywords_fast(vocabHash);
+        vocabHash = extractKeywords_fast(vocabHash, true);
         System.out.println("정렬중 ... ");
         vocabHash = vocabHash
                 .entrySet()
