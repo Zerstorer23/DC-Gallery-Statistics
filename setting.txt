@@ -1,0 +1,12 @@
+##설정파일입니다.
+gallID,lilyfever,갤러리 고유 ID
+major,false,메이져갤 =false / 마이너갤 = false
+maxPage,5200,긁어낼 최대 페이지
+galleryYear,2017,갤러리 생성년도
+currentYear,2020,현재 년도
+minimumActiveDays,0,유저 필터링 기준 최소 활동기간
+minimumFrequency,0,유저 필터링 기준 최소 글 작성수
+kToken,3,키워드 긁어내는 글자수 (예: 3으로 설정 [스즈미]야하루히 = [스즈미]야 호루히)
+crawlKeywords,true,키워드 분석도 한다 =true
+collectOnlyAfterThisPage,-1
+mergeGonick,true,닉변한 고닉은 묶어서
