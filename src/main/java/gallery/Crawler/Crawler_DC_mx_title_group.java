@@ -87,6 +87,11 @@ public class Crawler_DC_mx_title_group extends Crawler {
                             Date time = new Date(year, month, day);
                             String title = post.select("td[class=gall_tit ub-word],td[class=gall_tit ub-word voice_tit]").select("a").first().text();
                             title = removeChars(title);
+                         /*   if(year-1 <0){
+                                year++;
+                                System.out.println("Found "+time.toString()+" / "+date);
+                            }*/
+
                             if (months[year][month - 1] == null) {
                                 months[year][month - 1] = new Month(year, month);
                                 //    System.out.println("Found "+time.toString());

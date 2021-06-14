@@ -90,13 +90,14 @@ public class Month {
         int c = 0;
         for (Map.Entry<String, Integer> entry : vocab_freq.entrySet()) {
             if (entry.getKey().length() > 2) {
-                System.out.print((c + 1) + ". " + entry.getKey());
+                String out = (c + 1) + ". " + entry.getKey();
                 if (topKeywords.contains(entry.getKey())) {
-                    System.out.println(" (갤러리 공통 키워드)");
+                    out+=" (갤러리 공통 키워드) \n";
                     max++;
                 } else {
-                    System.out.println(" ");
+                    out+=" \n";
                 }
+                console(out);
                 c++;
                 if (c >= max) break;
             }
