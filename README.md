@@ -12,3 +12,6 @@ https://github.com/Zerstorer23/DC_mGallery_stats/releases
 
 Console output.txt파일의 경우 메모장으로 보면 줄바꿈이 안보이는 경우가 있어
 Sublime Text Edit이나 IDE로 열기를 
+
+https://drive.google.com/drive/folders/1Jlj3k54tmnRlwYftH1be_5oqGtK3xb3l
+https://gall.dcinside.com/mgallery/board/view/?id=haruhiism&no=3859&search_pos=-11412&s_type=search_subject_memo&s_keyword=%ED%86%B5%EA%B3%84&page=1
